@@ -7,12 +7,11 @@ pragma solidity ^0.8.20;
  * @notice A decentralized lottery using Chainlink VRF for secure randomness
  * @dev Demonstrates secure randomness, gas optimization, and best practices
  */
-
 import {VRFConsumerBaseV2} from "lib/chainlink-brownie-contracts/contracts/src/v0.8/VRFConsumerBaseV2.sol";
-import {VRFCoordinatorV2Interface} from "lib/chainlink-brownie-contracts/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import {VRFCoordinatorV2Interface} from
+    "lib/chainlink-brownie-contracts/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 
 contract Lottery is VRFConsumerBaseV2 {
-
     // errors
     error InvalidBet();
     error AlreadyResolved();
@@ -98,13 +97,8 @@ contract Lottery is VRFConsumerBaseV2 {
 
         bet.randomnessRequested = true;
 
-        uint256 requestId = COORDINATOR.requestRandomWords(
-            keyHash,
-            subscriptionId,
-            requestConfirmations,
-            callbackGasLimit,
-            1
-        );
+        uint256 requestId =
+            COORDINATOR.requestRandomWords(keyHash, subscriptionId, requestConfirmations, callbackGasLimit, 1);
 
         requestToBet[requestId] = _betId;
 
@@ -112,11 +106,7 @@ contract Lottery is VRFConsumerBaseV2 {
     }
 
     // chainlink callback
-    function fulfillRandomWords(
-        uint256 requestId,
-        uint256[] memory randomWords
-    ) internal override {
-
+    function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
         uint256 _betId = requestToBet[requestId];
         delete requestToBet[requestId];
 
@@ -136,7 +126,7 @@ contract Lottery is VRFConsumerBaseV2 {
         }
 
         if (reward != 0) {
-            (bool success, ) = bet.player.call{value: reward}("");
+            (bool success,) = bet.player.call{value: reward}("");
             require(success, "Transfer failed");
         }
 
@@ -145,31 +135,30 @@ contract Lottery is VRFConsumerBaseV2 {
 
     // extract hex
     function _getLast6Hex(bytes32 _hash) internal pure returns (uint8[6] memory result) {
-        for (uint256 i; i < 6; ) {
+        for (uint256 i; i < 6;) {
             result[i] = uint8(uint256(_hash >> (i * 4)) & 0xF);
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
     // count matches
-    function _countMatches(
-        uint8[6] memory guesses,
-        uint8[6] memory result
-    ) internal pure returns (uint256 matches) {
-        for (uint256 i; i < 6; ) {
+    function _countMatches(uint8[6] memory guesses, uint8[6] memory result) internal pure returns (uint256 matches) {
+        for (uint256 i; i < 6;) {
             if (guesses[i] == result[i]) {
-                unchecked { matches++; }
+                unchecked {
+                    matches++;
+                }
             }
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
     // reward logic
-    function _calculateReward(uint256 amount, uint256 matches)
-        internal
-        pure
-        returns (uint256)
-    {
+    function _calculateReward(uint256 amount, uint256 matches) internal pure returns (uint256) {
         if (matches == 0) return 0;
         if (matches == 1) return amount * 2;
         if (matches == 2) return amount * 3;

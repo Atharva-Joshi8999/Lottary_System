@@ -5,7 +5,6 @@ import {Test} from "lib/forge-std/src/Test.sol";
 import {Lottery} from "../src/lottery_system.sol";
 
 contract LotteryTest is Test {
-
     Lottery lottery;
 
     function setUp() public {
@@ -19,7 +18,7 @@ contract LotteryTest is Test {
     }
 
     function testPlaceBet() public {
-        uint8[6] memory guesses = [uint8(1),2,3,4,5,6];
+        uint8[6] memory guesses = [uint8(1), 2, 3, 4, 5, 6];
 
         lottery.placeBet{value: 1 ether}(guesses);
 
@@ -27,11 +26,9 @@ contract LotteryTest is Test {
     }
 
     function testRevertIfZeroETH() public {
-        uint8[6] memory guesses = [uint8(1),2,3,4,5,6];
+        uint8[6] memory guesses = [uint8(1), 2, 3, 4, 5, 6];
 
         vm.expectRevert();
         lottery.placeBet(guesses);
     }
-
-    
 }
