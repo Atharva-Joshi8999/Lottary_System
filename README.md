@@ -2,7 +2,7 @@
 
  Overview
 
-HashLottery is a decentralized lottery smart contract where users bet by guessing 6 hexadecimal values. The result is generated using blockchain-based randomness, and rewards are given based on how many values match.
+Lottery_S is a decentralized lottery smart contract where users bet by guessing 6 hexadecimal values. The result is generated using blockchain-based randomness, and rewards are given based on how many values match.
 
 This project focuses on **clean design, security, and real-world smart contract practices** rather than building a complex system.
 
